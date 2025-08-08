@@ -1,39 +1,38 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+const models = [
+  "NoticiasCortas",
+  "Obras",
+  "MapaDistrito",
+  "Alertas",
+  "Queja",
+  "Solicitud",
+  "PuntoReciclaje",
+];
 
 export default function Dashboard() {
-  const models = [
-    "NoticiasCortas",
-    "Obras",
-    "MapaDistrito",
-    "Alertas",
-    "Queja",
-    "Solicitud",
-    "PuntoReciclaje",
-  ];
-
-  function handleCreate(modelName: string) {
-    alert(`Create new ${modelName} (form not implemented yet)`);
-  }
+  const navigate = useNavigate();
 
   return (
-    <main style={{ padding: 20 }}>
+    <main style={{ padding: "2rem" }}>
       <h1>Dashboard</h1>
-      <p>Select a service to create a new entry:</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
         {models.map((model) => (
           <button
             key={model}
-            onClick={() => handleCreate(model)}
+            onClick={() => navigate(`/create-${model.toLowerCase()}`)}
             style={{
-              padding: "10px 20px",
+              padding: "0.5rem 1rem",
               fontSize: "1rem",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
               cursor: "pointer",
-              borderRadius: 6,
-              border: "1px solid #ccc",
-              backgroundColor: "#f0f0f0",
             }}
           >
-            Create {model}
+            + Crear {model}
           </button>
         ))}
       </div>
