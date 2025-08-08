@@ -14,26 +14,32 @@ export default function CreateNoticiaCorta() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await client.models.NoticiasCortas.create({
-        nombre,
-        fechaEscrita: new Date(fechaEscrita),
-        autor,
-        mensaje,
-        imagen: imagen || undefined,
-      });
-      alert("Noticia Corta creada!");
-      navigate("/"); // Navigate back to dashboard
-    } catch (error) {
-      console.error("Error creating noticia corta:", error);
-      alert("Error creating noticia corta.");
-    } finally {
-      setLoading(false);
-    }
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    // Convert fechaEscrita (e.g. "2025-08-08") to ISO string with midnight time
+    const isoFechaEscrita = new Date(fechaEscrita + "T00:00:00Z").toISOString();
+
+    await client.models.NoticiasCortas.create({
+      nombre,
+      fechaEscrita: isoFechaEscrita, // <-- use the ISO string here
+      autor,
+      mensaje,
+      imagen: imagen || undefined,
+    });
+
+    alert("Noticia Corta creada!");
+    navigate("/"); // Navigate back to dashboard
+  } catch (error) {
+    console.error("Error creating noticia corta:", error);
+    alert("Error creating noticia corta.");
+  } finally {
+    setLoading(false);
   }
+}
+
 
   return (
         <form
